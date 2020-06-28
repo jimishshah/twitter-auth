@@ -1,0 +1,39 @@
+version: "3"
+services:
+  twitter-auth-server:
+    container_name: twitter-auth-server
+    image: latest/twitter-auth-server
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile-server
+    volumes:
+      - .:/usr/src/app/
+      - /usr/src/app/node_modules
+      - /usr/src/app/packages/server/node_modules
+    ports:
+      - "7500:3000"
+    links:
+      - mongo
+  twitter-auth-client:
+    container_name: twitter-auth-client
+    image: latest/twitter-auth-client
+    stdin_open: true
+    tty: true
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile-client
+    volumes:
+      - .:/usr/src/app/
+      - /usr/src/app/node_modules
+      - /usr/src/app/packages/client/node_modules
+    ports:
+      - "7600:3000"
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27018:27017"
