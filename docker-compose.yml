@@ -3,6 +3,8 @@ services:
   twitter-auth-server:
     container_name: twitter-auth-server
     image: latest/twitter-auth-server
+    stdin_open: true
+    tty: true
     restart: always
     build:
       context: .
